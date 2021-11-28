@@ -32,6 +32,19 @@ class PerformanceCalculator {
         return result;
     }
 
+
+    // Calculate volume credits for a performance
+    // Pattern: Extract function
+    // Pattern: Move function
+    get volumeCredits() {
+        let result = Math.max(this.performance.audience - 30, 0)
+
+        // add extra credit for every ten commedy attendees
+        if('comedy' === this.play.type) 
+            result += Math.floor(this.performance.audience / 10)
+        
+        return result;
+    }
 }
 
 
@@ -51,7 +64,7 @@ export default function createStatementData(invoice, plays) {
         const result = Object.assign({}, aPerformance)
         result.play = calculator.play;
         result.amount = calculator.amount;
-        result.volumeCredits = volumeCreditsFor(result)
+        result.volumeCredits = calculator.volumeCredits;
         return result;
     }
 
@@ -63,17 +76,7 @@ export default function createStatementData(invoice, plays) {
         return plays[aPerformance.playID]
     }
 
-    
-    // Calculate volume credits for a performance
-    // Pattern: Extract function
-    function volumeCreditsFor(aPerformance) {
-        let result = Math.max(aPerformance.audience - 30, 0)
 
-        // add extra credit for every ten commedy attendees
-        if('comedy' === aPerformance.play.type) 
-        result += Math.floor(aPerformance.audience / 10)
-        return result;
-    }
 
     // Calculate total volume credits
     // Pattern: Split loop
