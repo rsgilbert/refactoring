@@ -1,5 +1,4 @@
-const { plays, invoices } = require('./data')
-
+import { plays, invoices } from './data.js'
 
 // code that prints the bill
 function statement(invoice, plays) {
