@@ -3,12 +3,12 @@ import createStatementData from './createStatementData.js'
 
 
 // Run the function and print result
-// const result = statement(invoices[0], plays)
-// console.log(result)
+const result = statement(invoices[0], plays)
+console.log(result)
 
 // Print html statement
-const result = htmlStatement(invoices[0], plays)
-console.log(result)
+// const result = htmlStatement(invoices[0], plays)
+// console.log(result)
 
 
 // code that prints the bill
