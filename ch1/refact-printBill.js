@@ -8,40 +8,66 @@ console.log(result)
 
 // code that prints the bill
 function statement(invoice, plays) {
-    let totalAmount = 0;
-    let volumeCredits = 0;
+
     let result = `Statement for ${invoice.customer}\n`;
-    const format = new Intl.NumberFormat(
-        'en-US', { 
-            style: 'currency', 
-            currency: 'USD', 
-            minimumFractionDigits: 2 
-        })
-        .format;
+    
     for(let perf of invoice.performances) {
-        // add volume credits
-        volumeCredits += volumeCreditsFor(perf)
-
         // print line for this order
-        result += `\t${playFor(perf).name}: ${format(amountFor(perf) / 100)} (${perf.audience} seats)\n`
-
-        totalAmount += amountFor(perf);
+        result += `\t${playFor(perf).name}: ${usd(amountFor(perf))} (${perf.audience} seats)\n`
     }
 
-    result += `Amount owed is ${format(totalAmount / 100)}\n`
-    result += `You earned ${volumeCredits} credits\n`
+
+    result += `Amount owed is ${usd(totalAmount())}\n`
+    result += `You earned ${totalVolumeCredits()} credits\n`
     return result;
+}
+
+function totalAmount() {
+    let invoice = invoices[0]
+    let result = 0;
+    for(let perf of invoice.performances) {
+        result += amountFor(perf);
+    }
+    return result;
+}
+
+// Calculate total volume credits
+// Pattern: Split loop
+// Pattern: Slide statement
+// Pattern: Extract Function
+// Pattern: Replace Temp With Query
+// Pattern: Inline variable
+function totalVolumeCredits() {
+    let result = 0;
+    for(let perf of invoices[0].performances) {
+        // add volume credits
+        result += volumeCreditsFor(perf)
+    }
+    return result;
+}
+
+// Patern: Function variable to declared function 
+// Pattern: Change Function Declaraton
+// Replace temp variable format with declared function
+// Because temporary variables are only useful within their routine.
+function usd(aNumber) {
+    return new Intl.NumberFormat(
+        'en-US', { 
+            style: 'currency', 
+            currency: 'GBP', 
+            minimumFractionDigits: 2 
+        })
+        .format(aNumber / 100)
 }
 
 // Calculate volume credits for a performance
 // Pattern: Extract function
-function volumeCreditsFor(perf) {
-    // add volume credits
-    let result = Math.max(perf.audience - 30, 0)
+function volumeCreditsFor(aPerformance) {
+    let result = Math.max(aPerformance.audience - 30, 0)
 
     // add extra credit for every ten commedy attendees
-    if('comedy' === playFor(perf).type) 
-       result += Math.floor(perf.audience / 10)
+    if('comedy' === playFor(aPerformance).type) 
+       result += Math.floor(aPerformance.audience / 10)
     return result;
 }
 
