@@ -8,12 +8,6 @@ console.log(result)
 
 // code that prints the bill
 function statement(invoice, plays) {
-    // Extract getting play for a given performance
-    // Pattern: Replace Temp with Query
-    function playFor(aPerformance) {
-        return plays[aPerformance.playID]
-    }
-
     let totalAmount = 0;
     let volumeCredits = 0;
     let result = `Statement for ${invoice.customer}\n`;
@@ -25,20 +19,13 @@ function statement(invoice, plays) {
         })
         .format;
     for(let perf of invoice.performances) {
-        const play = playFor(perf)
-        let thisAmount = amountFor(perf, play);
-        
         // add volume credits
-        volumeCredits += Math.max(perf.audience - 30, 0)
+        volumeCredits += volumeCreditsFor(perf)
 
-        // add extra credit for every ten commedy attendees
-        if('comedy' === play.type) 
-           volumeCredits += Math.floor(perf.audience / 10)
-        
         // print line for this order
-        result += `\t${play.name}: ${format(thisAmount / 100)} (${perf.audience} seats)\n`
+        result += `\t${playFor(perf).name}: ${format(amountFor(perf) / 100)} (${perf.audience} seats)\n`
 
-        totalAmount += thisAmount;
+        totalAmount += amountFor(perf);
     }
 
     result += `Amount owed is ${format(totalAmount / 100)}\n`
@@ -46,18 +33,30 @@ function statement(invoice, plays) {
     return result;
 }
 
+// Calculate volume credits for a performance
+// Pattern: Extract function
+function volumeCreditsFor(perf) {
+    // add volume credits
+    let result = Math.max(perf.audience - 30, 0)
+
+    // add extra credit for every ten commedy attendees
+    if('comedy' === playFor(perf).type) 
+       result += Math.floor(perf.audience / 10)
+    return result;
+}
 
 
-
-// const result = statement(invoices[0], plays)
-// console.log(result)
-
+// Extract getting play for a given performance
+// Pattern: Replace Temp with Query
+function playFor(aPerformance) {
+    return plays[aPerformance.playID]
+}
 
 // Extract amountFor function
-
-function amountFor(aPerformance, play) {
+// Pattern: Extract Function
+function amountFor(aPerformance) {
     let result = 0;
-    switch(play.type) {
+    switch(playFor(aPerformance).type) {
         case 'tragedy':
             result = 40000;
             if(aPerformance.audience > 30) {
@@ -72,9 +71,8 @@ function amountFor(aPerformance, play) {
             result += 300 * aPerformance.audience;
             break;
         default:
-            throw new Error(`unknown type: ${play.type}`)
+            throw new Error(`unknown type: ${playFor(aPerformance).type}`)
     }
     return result;
-
 }
 
