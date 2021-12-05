@@ -1,0 +1,6 @@
+/**
+ * My description
+ */
+function foo() {
+    
+}
