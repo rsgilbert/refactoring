@@ -1,5 +1,5 @@
 
-export class Province {
+class Province {
     constructor(doc) {
         this._name = doc.name;
         this._producers = [];
@@ -41,7 +41,7 @@ export class Province {
             .sort((a, b) => a.cost - b.cost)
             .forEach(p => {
                 const constribution = Math.min(remainingDemand, p.production);
-                remainingDemand = constribution;
+                remainingDemand -= constribution;
                 result += constribution * p.cost;
             })
         return result;
@@ -58,7 +58,7 @@ export class Province {
 
 
 // create a sample province for testing 
-export function sampleProvinceData() {
+function sampleProvinceData() {
     return {
         name: 'Asia',
         producers: [
@@ -72,7 +72,7 @@ export function sampleProvinceData() {
 }
 
 
-export class Producer {
+class Producer {
     constructor(aProvince, data) {
         this._province = aProvince;
         this._cost = data.cost;
@@ -98,3 +98,9 @@ export class Producer {
 
 
 
+
+module.exports = {
+    Province,
+    sampleProvinceData,
+    Producer
+}

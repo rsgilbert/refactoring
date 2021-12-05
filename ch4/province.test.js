@@ -1,10 +1,17 @@
 // Testing using the Mocha framework
-
-import { Province, sampleProvinceData } from "./province.js"
+const { Province, sampleProvinceData } = require("./province.js")
 
 describe('province', function() {
-    it('shortfall', function() {
-        const asia = new Province(sampleProvinceData())
-        assert.equal(asia.shortfall, 5)
+    let asia = new Province(sampleProvinceData())
+    beforeEach(function() {
+        asia = new Province(sampleProvinceData())
+    })
+    test('shortfall', function() {
+        expect(asia.shortfall).toEqual(5)
+      //  asia._demand = 5
+    })
+
+    test('profit', function() {
+        expect(asia.profit).toEqual(230)
     })
 })
