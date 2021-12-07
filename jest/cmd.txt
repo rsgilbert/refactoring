@@ -1,2 +1,0 @@
-// Initialize jest
-jest --init 
