@@ -30,21 +30,30 @@ class TestUtil {
         // console.log(`*** SKIP: ${fn.name} ***`)
     }
 
-    testEqual(expected, present) {
-        if(expected === present) {
-            console.log('OK')
+    testEqual(actual, expected) {
+        if(actual === expected) {
+            Log.green('OK')
         }else {
             this.#tempSucceeded = false;
-            console.log('Failed. Expected', expected, 'got', present) 
+            Log.red('Failed. Expected', expected, ', actual is', actual) 
         }
     }
 
-    testTrue(present) {
-        if(present === true) {
-            console.log('OK')
+    testNotEqual(actual, notExpected) {
+        if(actual !== notExpected) {
+            Log.green('OK')
+        }else {
+            this.#tempSucceeded = false;
+            Log.red('Failed. Did not expect', notExpected, ', actual is', actual) 
+        }
+    }
+
+    testTrue(actual) {
+        if(actual === true) {
+            Log.green('OK')
         }
         else {
-            console.log('Failed. Expected true, present is', present)
+            Log.red('Failed. Expected true , actual is', actual)
             this.#tempSucceeded = false;
         } 
     }
@@ -54,9 +63,28 @@ class TestUtil {
             console.log('OK')
         }
         else {
-            console.log('Failed. Expected false, present is', present) 
+            console.log('Failed. Expected false , actual is', actual) 
             this.#tempSucceeded = false;
         }
+    }
+}
+
+class Log {
+    static #resetColor = '\x1b[0m'
+    static #redColor = '\x1b[31m';
+    static #greenColor = '\x1b[32m';
+    static #yellowColor = '\x1b[33m';
+
+    static red(...logs) {
+        console.log(Log.#redColor, ...logs, Log.#resetColor)
+    }
+
+    static green(...logs) {
+        console.log(Log.#greenColor, ...logs, Log.#resetColor)
+    }
+
+    static yellow(...logs) {
+        console.log(Log.#yellowColor, ...logs, Log.#resetColor)
     }
 }
 
