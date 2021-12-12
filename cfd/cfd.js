@@ -66,12 +66,16 @@ test(function refBookTest() {
     testEqual(3, refBook.reservations.length)
 });
 
-function inNewEngland(aCustomer) {
-    return ['MA', 'CT', 'ME', 'VT', 'NH', 'RI'].includes(aCustomer.address)
+// function inNewEngland(aCustomer) {
+//     zz_inNewEngland(aCustomer.address)
+// }
+
+function inNewEngland(address) {
+    return ['MA', 'CT', 'ME', 'VT', 'NH', 'RI'].includes(address)
 }
 
 const customers = [{ address: 'MA' }, { address: 'GA' }, { address: 'RI' }]
-const newEnglanders = customers.filter(c => inNewEngland(c))
+const newEnglanders = customers.filter(c => inNewEngland(c.address))
 
 test(function inNewEnglandTest() {
     testEqual(2, newEnglanders.length)
