@@ -48,8 +48,8 @@ class TelephoneNumber {
         return `${this.areaCode} ${this.officeNumber}`
     }
 
-    get areaCode() { return this._officeAreaCode; }
-    set areaCode(arg) { this._officeAreaCode = arg; }
+    get areaCode() { return this._areaCode; }
+    set areaCode(arg) { this._areaCode = arg; }
 
     get officeNumber() { return this._officeNumber; }
     set officeNumber(arg) { this._officeNumber = arg; }
