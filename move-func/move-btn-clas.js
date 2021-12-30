@@ -77,7 +77,7 @@ class Account2 {
 
 class AccountType2 {
     get isPremium() { return this._isPremium; }
-    set isPremium(arg) { this._isPremium = arg; }
+    set /* isPremium */(arg) { this._isPremium = arg; }
 
 
     overdaftCharge(daysOverdrawn) {
