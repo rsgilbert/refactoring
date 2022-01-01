@@ -58,12 +58,12 @@ class TestUtil {
         } 
     }
 
-    testFalse(present) {
-        if(present === false) {
-            console.log('OK')
+    testFalse(actual) {
+        if(actual === false) {
+            Log.green('OK')
         }
         else {
-            console.log('Failed. Expected false , actual is', actual) 
+            Log.red('Failed. Expected false , actual is', actual) 
             this.#tempSucceeded = false;
         }
     }
