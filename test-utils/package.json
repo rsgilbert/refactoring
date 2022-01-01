@@ -1,12 +1,13 @@
 {
-  "name": "test-utils",
+  "name": "test-utils-lib",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "repository":"https://github.com/rsgilbert/refactoring",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Gilbert Ssenyonjo <gssenyonjo@gmail.com>",
   "license": "ISC"
 }
