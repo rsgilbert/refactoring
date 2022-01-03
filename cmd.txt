@@ -2,3 +2,7 @@
 // See: https://github.com/facebook/jest/issues/9920
 // Run command using:
 jest --inject-globals false extract-fn.test.js
+
+
+// create environment for a refactoring example
+cd ..; mkdir rem-flag-arg; cd rem-flag-arg; echo '# REMOVE FLAG ARGUMENT' > rem-flag.md; echo '// remove flag argument'  > rem-flag.js
