@@ -5,7 +5,7 @@ class Booking {
     /** @type boolean */
     _isPeakday;
     /** @type PremiumBookingDelegate */
-    _premiumDelegate;
+    _bookingDelegate;
 
     /**
      * 
@@ -15,6 +15,7 @@ class Booking {
     constructor(show, date) {
         this._show = show;
         this._date = date;
+        this._bookingDelegate = new BookingDelegate(this);
     }
 
     get show(){ return this._show; }
@@ -22,76 +23,50 @@ class Booking {
     get isPeakday() { return this._isPeakday; }
     set isPeakday(arg) { this._isPeakday = arg; }
 
-    get isPremiumDelegatePresent() {
-        return !!this._premiumDelegate;
-    }
-
     get hasTalkback() {
-        return (this.isPremiumDelegatePresent)
-            ? this._premiumDelegate.hasTalkback
-            : !!(this._show.hasOwnProperty('talkback') && this.isPeakday);
-    }
-
-    get defaultBasePrice() {
-        let result = this._show.price;
-        if(this.isPeakday) result += Math.round(result * 0.15);
-        return result;
+        return this._bookingDelegate.hasTalkback
     }
 
     get basePrice() {
-        return (this.isPremiumDelegatePresent)
-            ? this._premiumDelegate.basePrice
-            : this.defaultBasePrice
+        return this._bookingDelegate.basePrice;
     }
-
-    // alternative approach.
-    // Recast delegate's method as extension of base method
-    get basePrice2() {
-        let result = this._show.price;
-        if(this.isPeakday) result += Math.round(result * 0.15);
-        if(this.isPremiumDelegatePresent) 
-            result = this._premiumDelegate.basePrice2(result)
-        return result;
-    }
-
 
     bePremium(extras) {
-        this._premiumDelegate = new PremiumBookingDelegate(this, extras);
+        this._bookingDelegate = new PremiumBookingDelegate(this, extras);
     }
 
     get hasDinner() {
-        return this._premiumDelegate?.hasDinner;
+        return this._bookingDelegate?.hasDinner;
     }
 
 }
 
 
-// class PremiumBooking extends Booking {
-//     _extras;
+/** Base booking delegate. Applied extract superclass to PremiumBookingDelegate */
+class BookingDelegate {
+    _host;
+    constructor(hostBooking) {
+        this._host = hostBooking;
+    }
+    get hasTalkback() {
+        return !!(this._host.show.hasOwnProperty('talkback') && this._host.isPeakday);
+    }
 
-//     /**
-//      * 
-//      * @param {{ price: number }} show 
-//      * @param {Date} date 
-//      * @param {{ premiumFee: number, dinner?: boolean }} extras 
-//      */
-//     constructor(show, date, extras) {
-//         super(show, date);
-//         this._extras = extras;
-//     }
-
-// }
-
-
-
+    get basePrice() {
+        let result = this._host.show.price;
+        if(this._host.isPeakday) result += Math.round(result * 0.15);
+        return result;
+    }
+}
 /**
  *  Delegate class.
  */
-class PremiumBookingDelegate {
+class PremiumBookingDelegate extends BookingDelegate {
     /** @type Booking */
     _host;
 
     constructor(hostBooking, extras) {
+        super(hostBooking);
         this._host = hostBooking;
         this._extras = extras;
     }
@@ -103,10 +78,7 @@ class PremiumBookingDelegate {
     }
 
     get basePrice() {
-        return Math.round(this._host.defaultBasePrice + this._extras.premiumFee);
-    }
-    basePrice2(base) {
-        return Math.round(base + this._extras.premiumFee);
+        return Math.round(super.basePrice + this._extras.premiumFee);
     }
 
     get hasDinner() {
