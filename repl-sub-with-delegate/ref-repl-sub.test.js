@@ -1,7 +1,9 @@
 const { describe, it, beforeEach } = require('@jest/globals')
-const { Booking, PremiumBooking } = require('./ref-repl-sub.js')
+const { Booking, PremiumBooking, createBooking, createPremiumBooking } = require('./ref-repl-sub.js')
 const assert = require('assert')
 
+
+// Step 1. Replace Constructor with Factory Function.
 
 describe('original', function () {
     describe('booking', function () {
@@ -10,7 +12,7 @@ describe('original', function () {
         let show = { price: 500, talkback: true }
         const date = new Date();
         beforeEach(function () {
-            booking = new Booking(show, date);
+            booking = createBooking(show, date);
         });
         it('gives correct base price', function () {
             assert.strictEqual(booking.basePrice, 500)
@@ -29,7 +31,7 @@ describe('original', function () {
         const date = new Date();
         let extras = { premiumFee: 400 }
         beforeEach(function () {
-            premiumBooking = new PremiumBooking(show, date, extras);
+            premiumBooking = createPremiumBooking(show, date, extras);
         });
         it('gives correct base price', function () {
             assert.strictEqual(premiumBooking.basePrice, 900);
@@ -39,7 +41,7 @@ describe('original', function () {
         });
         it('gives correct hasDinner', function () {
             assert.strictEqual(premiumBooking.hasDinner, false);
-            premiumBooking = new PremiumBooking(show, date, { ...extras, dinner: true });
+            premiumBooking = createPremiumBooking(show, date, { ...extras, dinner: true });
             assert.strictEqual(premiumBooking.hasDinner, true);
         });
     });
