@@ -1,5 +1,5 @@
 const { describe, it, beforeEach } = require('@jest/globals')
-const { Booking, PremiumBooking } = require('./repl-sub.js')
+const { Booking, PremiumBooking } = require('./ref-repl-sub.js')
 const assert = require('assert')
 
 
@@ -11,7 +11,7 @@ describe('original', function () {
         const date = new Date();
         beforeEach(function () {
             booking = new Booking(show, date);
-        })
+        });
         it('gives correct base price', function () {
             assert.strictEqual(booking.basePrice, 500)
         });
@@ -30,7 +30,7 @@ describe('original', function () {
         let extras = { premiumFee: 400 }
         beforeEach(function () {
             premiumBooking = new PremiumBooking(show, date, extras);
-        })
+        });
         it('gives correct base price', function () {
             assert.strictEqual(premiumBooking.basePrice, 900);
         });
