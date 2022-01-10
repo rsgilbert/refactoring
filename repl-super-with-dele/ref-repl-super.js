@@ -24,15 +24,11 @@ class CatalogRepository {
 
     add(catalogItem) { this._catalogItems.push(catalogItem); }
 
-
     get(id) {
         return this._catalogItems.find(c => c.id === id);
     }
 }
 
-const catalogRepo = new CatalogRepository([]);
-catalogRepo.add(new CatalogItem('A1', 'First item', []));
-catalogRepo.add(new CatalogItem('Z9', 'last item', ['revered']));
 
 class Scroll {
     _id;
@@ -43,18 +39,17 @@ class Scroll {
      * @param {*} title 
      * @param {*} tags 
      * @param {Date} dateLastCleaned 
+     * @param { CatalogRepository} catalogRepository
      */
-    constructor(id, title, tags, dateLastCleaned, catalogId) {
-        // super(id, title, tags);
+    constructor(id, dateLastCleaned, catalogId, catalogRepository) {
         this._id = id;
         this._lastCleaned = dateLastCleaned;
-        this._catalogItem = new CatalogItem(null, title, tags);
-        this._catalogItem2 = catalogRepo.get(catalogId);
+        this._catalogItem = catalogRepository?.get(catalogId);
     }
 
     // Forwarding/delegating functions
     get id() { return this._id; }
-    get catalogId() { return this._catalogItem2._id; }
+    get catalogId() { return this._catalogItem._id; }
     get title() { return this._catalogItem.title; }
     hasTag(arg) { return this._catalogItem.hasTag(arg); }
 
@@ -76,7 +71,7 @@ class Scroll {
 
 
 module.exports = {
-    Scroll
+    Scroll, CatalogRepository, CatalogItem
 }
 
 
